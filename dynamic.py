@@ -7,11 +7,6 @@ from torch import nn
 
 from actor_net import DynamicModule
 
-os.add_dll_directory("C://Users//Yichen Luo//.mujoco//mjpro150//bin")
-os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
-
-np.set_printoptions(suppress=True)
-
 
 class ReplayBuffer(object):
     def __init__(self, state_dim, action_dim, max_size=int(1e5)):

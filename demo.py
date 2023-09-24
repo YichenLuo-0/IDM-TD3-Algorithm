@@ -5,8 +5,6 @@ import torch
 
 from actor_net import ActorNet
 
-os.add_dll_directory("C://Users//Yichen Luo//.mujoco//mjpro150//bin")
-
 
 class Agent(object):
     def __init__(self, env_name):
