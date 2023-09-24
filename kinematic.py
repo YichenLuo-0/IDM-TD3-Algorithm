@@ -10,12 +10,6 @@ from actor_net import ActorNet
 from critic_net import CriticNet
 from units import ReplayBuffer
 
-os.add_dll_directory("C://Users//Yichen Luo//.mujoco//mjpro150//bin")
-os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
-
-np.set_printoptions(suppress=True)
-
-
 class TD3AgentTrainer(object):
     def __init__(self, env_name, actor_lr, critic_lr, gamma, tau, capacity, start_timesteps, batch_size, expl_noise,
                  policy_noise, policy_noise_clip, policy_freq):
