@@ -8,19 +8,23 @@ from units import ReplayBuffer_D
 
 class DynamicAgentTrainer:
     def __init__(self, env_name, lr, batch_size, update_freq, step_number, capacity):
+        # Initialize the hyperparameters
         self.env_name = env_name
         self.batch_size = batch_size
         self.update_freq = update_freq
         self.step_number = step_number
 
+        # Initialize the Gym event
         self.env = gym.make(env_name)
         self.env.reset()
 
+        # Dimensions of observation space and action space
         self.state_dim = self.env.observation_space.shape[0]
         self.action_dim = self.env.action_space.shape[0]
-
+        # Replay buffer
         self.buffer = ReplayBuffer_D(self.state_dim, self.action_dim, int(capacity))
 
+        # Dynamic component
         self.dynamic_module = DynamicModule(self.state_dim, self.action_dim)
         self.optimizer = torch.optim.Adam(self.dynamic_module.parameters(), lr=lr)
         self.loss_fn = nn.HuberLoss()
@@ -53,12 +57,14 @@ class DynamicAgentTrainer:
             while not done:
                 if animation: self.env.render()
 
+                # Using a random policy
                 a = self.env.action_space.sample()
                 s_n, _, done, _ = self.env.step(a)
 
                 self.buffer.put(s, s_n, a)
                 s = s_n
 
+                # The IDM is updated at a fixed frequency
                 if total_timesteps > self.update_freq:
                     self.learn(episode)
                     self.save()

@@ -12,6 +12,7 @@ from units import ReplayBuffer_K
 class TD3AgentTrainer(object):
     def __init__(self, env_name, actor_lr, critic_lr, gamma, tau, capacity, start_timesteps, batch_size, expl_noise,
                  policy_noise, policy_noise_clip, policy_freq):
+        # Initialize the hyperparameters
         self.env_name = env_name
         self.gamma = gamma
         self.tau = tau
@@ -22,26 +23,32 @@ class TD3AgentTrainer(object):
         self.policy_noise_clip = policy_noise_clip
         self.policy_freq = policy_freq
 
+        # Initialize the Gym event
         self.env = gym.make(env_name)
         self.env.reset()
 
+        # Dimensions of observation space and action space
         self.state_dim = self.env.observation_space.shape[0]
         self.action_dim = self.env.action_space.shape[0]
         self.max_action = self.env.action_space.high[0]
-
+        # Replay buffer
         self.buffer = ReplayBuffer_K(self.state_dim, self.action_dim, int(capacity))
 
+        # Actor network
         self.actor = ActorNet(self.state_dim, self.action_dim)
         self.actor_target = ActorNet(self.state_dim, self.action_dim)
         self.actor_target.load_state_dict(self.actor.state_dict())
 
+        # Critic network
         self.critic = CriticNet(self.state_dim, self.action_dim)
         self.critic_target = CriticNet(self.state_dim, self.action_dim)
         self.critic_target.load_state_dict(self.critic.state_dict())
 
+        # Optimizer
         self.actor_optim = optim.Adam(self.actor.parameters(), lr=actor_lr)
         self.critic_optim = optim.Adam(self.critic.parameters(), lr=critic_lr)
 
+        # Loading the pre-trained IDM
         self.actor.load_dynamic_module(env_name)
         self.actor_target.load_dynamic_module(env_name)
 
@@ -135,6 +142,7 @@ class TD3AgentTrainer(object):
             print('Episode - ', i + 1, ', total reward - ', episode_reward, ', timestep - ', total_timesteps)
 
     def eval(self):
+        # The target network was used for testing
         actor = self.actor_target
         eval_env = gym.make(self.env_name)
         s = eval_env.reset()
@@ -147,6 +155,7 @@ class TD3AgentTrainer(object):
 
             while not done:
                 s = torch.tensor([s], dtype=torch.float)
+                # No random noise is added to the test
                 a = actor(s).detach().numpy().flatten()
                 s_n, r, done, _ = eval_env.step(a)
 
