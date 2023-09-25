@@ -1,5 +1,3 @@
-import os
-
 import gym
 import numpy as np
 import torch
@@ -9,6 +7,7 @@ import torch.optim as optim
 from actor_net import ActorNet
 from critic_net import CriticNet
 from units import ReplayBuffer
+
 
 class TD3AgentTrainer(object):
     def __init__(self, env_name, actor_lr, critic_lr, gamma, tau, capacity, start_timesteps, batch_size, expl_noise,

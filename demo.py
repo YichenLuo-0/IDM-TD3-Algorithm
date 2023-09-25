@@ -1,5 +1,3 @@
-import os
-
 import gym
 import torch
 
