@@ -5,4 +5,4 @@ PyTorch implementation of Inverse Dynamic Model-aware Twin Delayed Deep Determin
 
 Method is tested on [MuJoCo](http://www.mujoco.org/) continuous control tasks in [OpenAI gym](https://github.com/openai/gym). Networks are trained using [PyTorch 1.12](https://github.com/pytorch/pytorch) and Python 3.10.
 
-### Usage
+## Usage

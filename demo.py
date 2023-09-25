@@ -11,8 +11,10 @@ class Agent(object):
         state_dim = self.env.observation_space.shape[0]
         action_dim = self.env.action_space.shape[0]
 
+        # Load the actor net
         self.actor = ActorNet(state_dim, action_dim)
         self.actor.load_state_dict(torch.load("model/" + env_name + "/actor"))
+        # Load the dynamic component
         self.actor.load_dynamic_module(env_name + "\dynamics")
 
     def action(self, s):
