@@ -73,7 +73,6 @@ class DynamicAgentTrainer:
         print('Episode - ', episode + 1, ', loss - ', loss.detach().numpy())
 
     def iteration(self, max_episode, animation=True):
-
         episode = 0
         total_timesteps = 0
 
