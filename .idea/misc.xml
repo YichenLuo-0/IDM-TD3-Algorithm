@@ -4,5 +4,5 @@
     <option name="pathToExecutable" value="C:\ProgramData\anaconda3\Scripts\black.exe" />
     <option name="sdkUUID" value="8e320455-f0e6-4651-8fdd-2bbf0de4aa87" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="C:\ProgramData\anaconda3" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="gymenv" project-jdk-type="Python SDK" />
 </project>
