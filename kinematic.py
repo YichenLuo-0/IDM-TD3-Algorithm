@@ -6,7 +6,7 @@ import torch.optim as optim
 
 from actor_net import ActorNet
 from critic_net import CriticNet
-from units import ReplayBuffer
+from units import ReplayBuffer_K
 
 
 class TD3AgentTrainer(object):
@@ -29,7 +29,7 @@ class TD3AgentTrainer(object):
         self.action_dim = self.env.action_space.shape[0]
         self.max_action = self.env.action_space.high[0]
 
-        self.buffer = ReplayBuffer(self.state_dim, self.action_dim, int(capacity))
+        self.buffer = ReplayBuffer_K(self.state_dim, self.action_dim, int(capacity))
 
         self.actor = ActorNet(self.state_dim, self.action_dim)
         self.actor_target = ActorNet(self.state_dim, self.action_dim)
