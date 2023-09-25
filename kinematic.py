@@ -55,6 +55,7 @@ class TD3AgentTrainer(object):
     def learn(self):
         s, a, r, s_n, not_done = self.buffer.sample(self.batch_size)
 
+        # Gradient descent for critic networks
         def critic_learn():
             with torch.no_grad():
                 # Get next action and add target policy smoothing noise
@@ -66,6 +67,7 @@ class TD3AgentTrainer(object):
                 target_q1, target_q2 = self.critic_target(s_n, a_n)
                 target_q = r + self.gamma * not_done * torch.min(target_q1, target_q2)
 
+            # The smallest q-value is chosen as the gradient
             q1, q2 = self.critic(s, a)
             critic_loss = F.mse_loss(q1, target_q) + F.mse_loss(q2, target_q)
 
@@ -73,6 +75,7 @@ class TD3AgentTrainer(object):
             critic_loss.backward()
             self.critic_optim.step()
 
+        # Gradient descent for actor networks
         def actor_learn():
             actor_loss = -self.critic.Q1(s, self.actor(s)).mean()
 
@@ -80,6 +83,7 @@ class TD3AgentTrainer(object):
             actor_loss.backward()
             self.actor_optim.step()
 
+        # Soft update target networls
         def soft_update(net_target, net, tau):
             for target_param, param in zip(net_target.parameters(), net.parameters()):
                 target_param.data.copy_(target_param.data * (1.0 - tau) + param.data * tau)
@@ -103,20 +107,25 @@ class TD3AgentTrainer(object):
 
             while not done:
                 if total_timesteps >= self.start_timesteps:
+                    # Uniformly distributed random noise is used in policy
                     a = (
                             self.action(s)
                             + np.random.normal(0, self.max_action * self.expl_noise, size=self.action_dim)
                     ).clip(-self.max_action, self.max_action)
                 else:
+                    # Random policy
                     a = self.env.action_space.sample()
 
+                # Take a step
                 s_n, r, done, _ = self.env.step(a)
                 self.buffer.put(s, a, r, s_n, done)
                 s = s_n
 
+                # Perform the learning process
                 if total_timesteps >= self.start_timesteps:
                     self.learn()
                     if animation: self.env.render()
+                    # Perform the evaluation every 2000 steps
                     if total_timesteps % 2000 == 0: self.eval()
 
                 episode_reward += r
