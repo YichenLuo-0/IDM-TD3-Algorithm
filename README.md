@@ -1,1 +1,1 @@
-# IDM-TD3-Algorithm
+# IDM-TD3 Algorithm
