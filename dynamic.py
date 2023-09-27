@@ -1,3 +1,5 @@
+import argparse
+
 import gym
 import torch
 from torch import nn
@@ -82,13 +84,25 @@ class DynamicAgentTrainer:
 
 
 if __name__ == "__main__":
-    module = DynamicAgentTrainer(
-        env_name='HalfCheetah-v3',
-        lr=1e-3,
-        batch_size=256,
-        update_freq=128,
-        step_number=5000,
-        capacity=1e6
-    )
+    parser = argparse.ArgumentParser()
 
-    module.iteration(3000, False)
+    parser.add_argument("--env_name", default="HalfCheetah-v3")
+    parser.add_argument("--lr", default=1e-3, type=int)
+    parser.add_argument("--batch_size", default=256, type=int)
+    parser.add_argument("--update_freq", default=32, type=int)
+    parser.add_argument("--step_number", default=5000, type=int)
+    parser.add_argument("--capacity", default=1e6, type=int)
+
+    parser.add_argument("--max_episode", default=5000, type=int)
+    parser.add_argument("--animation", default=False)
+    args = parser.parse_args()
+
+    module = DynamicAgentTrainer(
+        env_name=args.env_name,
+        lr=args.lr,
+        batch_size=args.batch_size,
+        update_freq=args.update_freq,
+        step_number=args.step_number,
+        capacity=args.capacity
+    )
+    module.iteration(args.max_episode, args.animation)

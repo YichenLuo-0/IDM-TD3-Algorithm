@@ -1,3 +1,5 @@
+import argparse
+
 import gym
 import numpy as np
 import torch
@@ -175,19 +177,37 @@ class TD3AgentTrainer(object):
 
 
 if __name__ == '__main__':
-    trainer = TD3AgentTrainer(
-        env_name='HalfCheetah-v3',
-        actor_lr=5e-4,
-        critic_lr=5e-4,
-        gamma=0.99,
-        tau=0.005,
-        capacity=1e6,
-        start_timesteps=25e3,
-        batch_size=256,
-        expl_noise=0.2,
-        policy_noise=0.2,
-        policy_noise_clip=0.5,
-        policy_freq=6
-    )
+    parser = argparse.ArgumentParser()
 
-    trainer.iteration(100000, False)
+    parser.add_argument("--env_name", default="HalfCheetah-v3")
+    parser.add_argument("--actor_lr", default=5e-4, type=int)
+    parser.add_argument("--critic_lr", default=5e-4, type=int)
+    parser.add_argument("--gamma", default=0.99, type=float)
+    parser.add_argument("--tau", default=0.005, type=float)
+    parser.add_argument("--capacity", default=1e6, type=int)
+    parser.add_argument("--start_timesteps", default=25e3, type=int)
+    parser.add_argument("--batch_size", default=256, type=int)
+    parser.add_argument("--expl_noise", default=0.2, type=float)
+    parser.add_argument("--policy_noise", default=0.2, type=float)
+    parser.add_argument("--policy_noise_clip", default=0.5, type=float)
+    parser.add_argument("--policy_freq", default=6, type=int)
+
+    parser.add_argument("--max_episode", default=100000, type=int)
+    parser.add_argument("--animation", default=False)
+    args = parser.parse_args()
+
+    trainer = TD3AgentTrainer(
+        env_name=args.env_name,
+        actor_lr=args.actor_lr,
+        critic_lr=args.critic_lr,
+        gamma=args.gamma,
+        tau=args.tau,
+        capacity=args.capacity,
+        start_timesteps=args.start_timesteps,
+        batch_size=args.batch_size,
+        expl_noise=args.expl_noise,
+        policy_noise=args.policy_noise,
+        policy_noise_clip=args.policy_noise_clip,
+        policy_freq=args.policy_freq
+    )
+    trainer.iteration(args.max_episode, args.animation)
