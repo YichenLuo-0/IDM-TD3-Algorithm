@@ -1,3 +1,5 @@
+import argparse
+
 import gym
 import torch
 
@@ -40,5 +42,10 @@ class Agent(object):
 
 
 if __name__ == '__main__':
-    agent = Agent('HalfCheetah-v3')
-    agent.play(50)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--env_name", default="HalfCheetah-v3")
+    parser.add_argument("--episode", default=10)
+    args = parser.parse_args()
+
+    agent = Agent(args.env_name)
+    agent.play(args.episode)
