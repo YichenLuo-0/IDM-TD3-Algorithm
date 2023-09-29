@@ -87,7 +87,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--env_name", default="HalfCheetah-v3")
-    parser.add_argument("--lr", default=1e-3, type=int)
+    parser.add_argument("--lr", default=1e-3, type=float)
     parser.add_argument("--batch_size", default=256, type=int)
     parser.add_argument("--update_freq", default=32, type=int)
     parser.add_argument("--step_number", default=5000, type=int)
