@@ -8,7 +8,9 @@ Method is tested on [MuJoCo](http://www.mujoco.org/) continuous control tasks in
 
 Unlike other reinforcement learning algorithms, if you want to get a transferable IDM-TD3 model, you need to first train an IDM using supervised learning. For example, you can use the following command:
 
-`python dynamic.py --env_name HalfCheetah-v2`
+```
+python dynamic.py --env_name HalfCheetah-v2
+```
 
 to test the **HalfCheetah-v2** environment in MuJoCo control task. The trained IDM is saved in "*./model/HalfCheetah-v2*" directory.
 
