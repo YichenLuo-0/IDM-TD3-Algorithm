@@ -14,7 +14,11 @@ python dynamic.py --env_name HalfCheetah-v2
 
 to test the **HalfCheetah-v2** environment in MuJoCo control task. The trained IDM is saved in "*./model/HalfCheetah-v2*" directory.
 
+Then, you can then use the following command for reinforcement learning:
 
+```
+python kinematic.py --env_name HalfCheetah-v2
+```
 
 ## Usage
 
